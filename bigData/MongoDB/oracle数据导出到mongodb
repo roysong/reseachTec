@@ -10,6 +10,7 @@
 oracle能够将表数据导出为多种文件格式，根据实践检验，采用csv文件格式最为简单，所以此处以csv文件导出方式为主。
 ### 1.从oracle的数据表中导出数据为csv文件
 在sqldeveloper中选中需要导出的表，右键菜单选中export
+![Image text](https://github.com/roysong/reseachTec/raw/master/bigData/static/mongo/sqldev.png)
 ![在sqldeveloper中选中需要导出的表](https://github.com/roysong/reseachTec/raw/master/bigData/static/mongo/sqldev.png)
 然后在弹出窗口中执行导出
 ![执行导出](https://github.com/roysong/reseachTec/raw/master/bigData/static/mongo/exportWindow.png)
