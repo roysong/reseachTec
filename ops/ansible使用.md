@@ -16,10 +16,15 @@
 只需在控制机器上安装
 ``` shell
 # Red Hat/CentOS
-sudo yum install ansible
+$ sudo yum install ansible
 
 # Debian/Unbuntu
-sudo apt-get install ansible
+# 添加下面的源到/etc/apt/sources.list:
+deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main
+# 执行以下命令
+$ sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
+$ sudo apt-get update
+$ sudo apt-get install ansible
 ```
 
 ## 配置
@@ -27,7 +32,7 @@ sudo apt-get install ansible
 * 控制机器：
     - 配置受管节点：
     ``` shell
-    vi /etc/ansible/hosts #受管节点配置文件
+    $ vi /etc/ansible/hosts #受管节点配置文件
     [ad]
     192.168.0.88
     [jzjk]
@@ -40,16 +45,16 @@ sudo apt-get install ansible
 
     - 密匙配置
     ``` shell
-    ssh-agent $SHELL # 启用ssh代理
-    ssh-keygen # 生成密匙
-    ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.0.88 #复制密匙到目标机器
-    ssh-add ~/.ssh/id_rsa # 添加密匙到ssh代理中
+    $ ssh-agent $SHELL # 启用ssh代理
+    $ ssh-keygen # 生成密匙
+    $ ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.0.88 #复制密匙到目标机器
+    $ ssh-add ~/.ssh/id_rsa # 添加密匙到ssh代理中
     ```
 
 ## 编写脚本
 ### ad-hoc 临时命令
 ``` shell
-ansible all -m ping -u root #链接测试 ansible 所有机器（/etc/ansible/hosts 中配置的所有机器| 组名） -m (使用ansible模块名称) ping -u(切换用户) root
+$ ansible all -m ping -u root #链接测试 ansible 所有机器（/etc/ansible/hosts 中配置的所有机器| 组名） -m (使用ansible模块名称) ping -u(切换用户) root
 
 ```
 
@@ -88,7 +93,7 @@ playbook以yaml格式进行编写，从上到下顺序执行
 
 #### 执行palybook
 ``` shell
-ansibel-playbook playbook.yml
+$ ansibel-playbook playbook.yml
 ```
 
 ### 常用模块及参数
