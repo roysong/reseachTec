@@ -1,10 +1,10 @@
 ---
-- hosts: ad
-  remote_user: root
+- hosts: ad #在/etc/ansible/hosts配置文件中的ad组使用
+  remote_user: root  # 切换用户为root执行
   vars: 
-    jarname: 
+    jarname:   # 需要关闭的jar包名称
       - web_socket-0.0.1-SNAPSHOT.jar
   tasks: 
-   - name: stop jar if started
+   - name: stop jar # 循环读取jarname下的jar包名称，并关闭
      shell: ps -fe | grep "{{item}}" | grep -v grep | tr -s " "|cut -d " " -f2 | xargs kill -9
      loop: "{{jarname}}"

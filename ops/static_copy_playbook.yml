@@ -1,14 +1,14 @@
 ---
-- hosts: ad
-  remote_user: root
+- hosts: ad #在/etc/ansible/hosts配置文件中的ad组使用
+  remote_user: root # 切换用户为root执行
   vars: 
-    staticfiles:  
+    staticfiles:   # 需要上传的文件/文件夹名称
 #     - mongo.conf  # 文件
       - playbooks/  # 文件夹
     srcpath: /home/bili/
     destpath: /root/
   tasks: 
-   - name: copy file to host 
+   - name: copy file to host  # 循环读取staticfiles定义的文件或文件夹，上传到受管节点
      copy: 
        src: "{{srcpath}}{{item}}"
        dest: "{{destpath}}{{item}}"
