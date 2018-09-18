@@ -1,0 +1,21 @@
+---
+- hosts: ad
+  remote_user: root
+  vars: 
+    jarname:  
+      - web_socket-0.0.1-SNAPSHOT.jar
+    srcpath: /home/bili/
+    destpath: /root/
+  tasks: 
+   - name: copy jar to host 
+     copy: 
+       src: "{{srcpath}}{{item}}"
+       dest: "{{destpath}}{{item}}"
+     loop: "{{jarname}}"
+   - name: cd path
+     shell: cd {{destpath}}
+   - name: start jar
+     command: nohup /usr/java/jdk1.8.0_171/jre/bin/java -jar "{{destpath}}{{item}}" &
+     async: 45
+     poll: 0
+     loop: "{{jarname}}"

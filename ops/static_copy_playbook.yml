@@ -1,0 +1,15 @@
+---
+- hosts: ad
+  remote_user: root
+  vars: 
+    staticfiles:  
+#     - mongo.conf  # 文件
+      - playbooks/  # 文件夹
+    srcpath: /home/bili/
+    destpath: /root/
+  tasks: 
+   - name: copy file to host 
+     copy: 
+       src: "{{srcpath}}{{item}}"
+       dest: "{{destpath}}{{item}}"
+     loop: "{{staticfiles}}"
