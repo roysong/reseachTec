@@ -52,10 +52,11 @@ $ sudo apt-get install ansible
     ```
 
 ## 编写脚本
+ansible通过调用内置的不同模块，配置模块的不同参数在指定的机器或工作组中实现不同的功能，调用方式分为通过临时命令实现不需要重复利用的简单的功能和通过编写playbook脚本实现复杂的，可重复利用的功能
+
 ### ad-hoc 临时命令
 ``` shell
 $ ansible all -m ping -u root #链接测试 ansible 所有机器（/etc/ansible/hosts 中配置的所有机器| 组名） -m (使用ansible模块名称) ping -u(切换用户) root
-
 ```
 
 ### ansibel-playbook 脚本执行
