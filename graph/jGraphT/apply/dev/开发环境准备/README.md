@@ -12,3 +12,4 @@ JGraphT从版本1.0.0开始需要JDK最低1.8,低于1.0.0的版本能够支持1.
 ``` bash
 mvn archetype:generate -DarchetypeGroupId=org.jgrapht.archetypes -DarchetypeArtifactId=maven-archetype-jgrapht -DarchetypeVersion=1.2.0  
 ```
+[返回上一级](https://github.com/roysong/reseachTec/tree/master/graph/jGraphT/apply/dev)
