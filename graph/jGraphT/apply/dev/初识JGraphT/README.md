@@ -1,6 +1,6 @@
 # 初识JGraphT
 在JGraphT中，一张图由多条连线连接的多个顶点构成。实际上，在这个基础定义之上还存在很多扩展类型，之后我们会一一道来，但目前让我们先看一个创建有向图的简单例子：  
-```java
+``` java
 import org.jgrapht.*;
 import org.jgrapht.graph.*;
 import java.net.*;
