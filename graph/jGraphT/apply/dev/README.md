@@ -6,7 +6,7 @@ JGraphT开发指南包含以下话题，每个话题对应一篇独立文档：
 4. [图的访问方式](https://github.com/roysong/reseachTec/blob/master/graph/jGraphT/apply/dev/4_%E5%9B%BE%E7%9A%84%E8%AE%BF%E9%97%AE%E6%96%B9%E5%BC%8F.md)    
 5. [图的结构](https://github.com/roysong/reseachTec/blob/master/graph/jGraphT/apply/dev/5_%E5%9B%BE%E7%9A%84%E7%BB%93%E6%9E%84.md)    
 6. [图的修改](https://github.com/roysong/reseachTec/blob/master/graph/jGraphT/apply/dev/6_%E5%9B%BE%E7%9A%84%E4%BF%AE%E6%94%B9.md)  
-7. 图的生成  
+7. [图的生成](https://github.com/roysong/reseachTec/blob/master/graph/jGraphT/apply/dev/7_%E5%9B%BE%E7%9A%84%E7%94%9F%E6%88%90.md)  
 8. 图的遍历  
 9. 图形算法  
 10. 图的序列化及导入导出  
