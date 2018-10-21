@@ -1,0 +1,121 @@
+# 选择顶点和连线的类型
+在选择顶点和连线的对象类型时，需要注意很多约束规则以保障满足业务需求的功能能够正确执行。下面会针对常见的业务场景讲述对应的规则：  
+## equals and hashCode方法 
+在图形的默认实现中，顶点和连线对象都会被作为key使用，所以在选择它们的类型时，你必须遵循以下三条规则：  
+* 你必须遵循`java.lang.Object`中关于[equals](https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html#equals(java.lang.Object))和[hashcode](https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html#hashCode())的定义约定  
+* 特别注意，如果你需要覆写`equals`或者`hashcode`方法，你必须同时覆写它们两个  
+* 你自己实现的`hashcode`方法必须确保返回一个不随对象生命周期变化的哈希值  
+[这篇文章](https://www.ibm.com/developerworks/java/library/j-jtp05273/index.html)解释了上述规则中的一些细节，可供参考。  
+本条规则是所有场景的通用规则，下面会基于其它场景提出更多的规则。  
+## 匿名顶点 Anonymous Vertices  
+当应用仅关注图形结构（比如进行图形理论研究）时，为了节约内存就希望顶点对象越小越好。在这种情况下，直接使用[java.lang.Object](https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html)作为顶点类型就好。这样，在调试时，顶点的`hashcode`会被认为“近似”独特的。  
+## 顶点的唯一值 Vertices as Key Values  
+最常见的场景是使用一个不重复的key值作为顶点，比如[初识JGraphT](https://github.com/roysong/reseachTec/tree/master/graph/jGraphT/apply/dev/%E5%88%9D%E8%AF%86JGraphT)中（每个顶点是一个URL对象，对应不同的网站）那样。在这样的使用场景下，顶点采用`String`、`Integer`或者一个简单类的对象都是不错的选择。换句话说，当顶点使用`String`类型时，`String`的值就是顶点的标识，而不仅仅是用于顶点显示的标签。  
+## 带业务属性的顶点 Vertices with Attributes  
+更多复杂的应用需要在顶点上关联（多个）非唯一性（non-key）的属性。最典型的解决方案就是用一个类来承载所有需要关联的属性，但我们还需要明确一下不同的场景。  
+### 所有属性不具备唯一性 No Keys
+如果顶点上所有的属性都是非关键字类型（意即可以出现重复值），那么事情就简单了。比如，假设你正在建模分子结构, 其中顶点是原子, 边缘是它们之间的键。然后你可能定义了一个类：  
+```java
+class AtomVertex
+{
+    Element element;  // 使用元素周期表枚举
+    int formalCharge; // 用于记录
+    ... 其它原子属性 ...
+}
+```  
+在这个例子中，你不必覆写`equals`和`hashCode`方法，因为很多不同的原子具备完全相同的属性。  
+### 所有属性具备唯一性 All keys
+相反地，如果所有的属性共同构成一个key，那也很容易解决。假设你的应用是一个软件包管理器，图中的每个顶点对应一个软件包，连线代表包之间的依赖关系。然后你可以定义一个类：  
+```java
+class SoftwarePackageVertex
+{
+    final String orgName;
+    final String packageName;
+    final String packageVersion;
+    
+    ... constructor etc ...
+    
+    public String toString()
+    {
+        return orgName + "-" + packageName + "-" + packageVersion;
+    }
+    
+    public int hashCode()
+    {
+        return toString().hashCode();
+    }
+    
+    public boolean equals(Object o)
+    {
+        return (o instanceof SoftwarePackageVertex) && (toString().equals(o.toString()));
+    }
+}
+```  
+这种情况下，你必须得覆写`equals`和`hashCode`方法了，因为不可能出现多个顶点代表同一版本的软件包。并且你应该能直接在图中访问指定顶点，而不是遍历图中所有的顶点来找到需要访问的顶点。  
+注意上面类中所有的实例变量都被声明为final；这一点非常重要，它代表所有顶点和连线的hashcode在实例化完成后都不会改变，这样这些顶点和连线才能以hash key的方式来使用。  
+### 有的属性具备唯一性，有的不具备 Key subset
+现在我们进入复杂的场景，承接上面的例子，假设你想要为`SoftwarePackageVertex`添加一个`releaseDate`属性来追踪当前软件包版本是什么时候发布的。这个新的属性并非key的一部分，它只是数据。那么我们怎么对待`equals`/`hashCode`方法呢？  
+* 众多因素表明，把`releaseDate`属性加到这两方法中不是什么好主意。比如说，如果我们想要通过包的标识符找到某个顶点，但我们不知道它的发布日期，那我们怎么找？还有，如果发布日期更改为未发布的包时怎么处理？我们如何避免两个不同的顶点对象代表同一个包版本？  
+* 然而，如果我们不把`releaseDate`属性加到这两方法中，那么就会出现一致性问题，因为两个拥有不同`releaseDate`的顶点对象会被认为是相同的。  
+所以一旦你尝试实现这个场景，当心你可能遇到不可预见的陷阱。  
+## 顶点引用外部对象 Vertices as Pointers  
+处理顶点多个属性的更佳方式是让顶点引用一个外部对象，而不是将属性数据放在顶点对象中。下面的例子中，顶点类定义为`SoftwarePackageVertex`，它里面并没有发布日期属性。然后将扩展的属性比如发布日期放在一个独立的`SoftwarePackageVersion`类中，并在`SoftwarePackageVertex`中为将它映射为独立的key以便查询。这样就保持了图形的清晰，付出的代价仅仅是查询上复杂一点而已。  
+典型的优化方法是通过直接引用方式：  
+``` java
+class SoftwarePackageVertex
+{
+    final SoftwarePackageVersion version;
+
+    public String toString()
+    {
+        return version.keyString();
+    }
+
+    public int hashCode()
+    {
+        return toString().hashCode();
+    }
+
+    public boolean equals(Object o)
+    {
+        return (o instanceof SoftwarePackageVertex) && (toString().equals(o.toString()));
+    }
+}
+
+class SoftwarePackageVersion
+{
+    final String orgName;
+    final String packageName;
+    final String packageVersion;
+    Date releaseDate;
+
+    public String keyString()
+    {
+        return orgName + "-" + packageName + "-" + packageVersion;
+    }
+}
+```
+这样，我们就可以随时以软件包版本来构建一个顶点，同时也无须以映射的方式来查询软件包的版本信息。这个应用仍然需要避免一致性问题，因为不同发布日期相同名称及版本号的`SoftwarePackageVersion`仍然拥有相同的key，但现在这个问题的责任从图形表现转移到应用程序中来了。  
+## 匿名连线 Anonymous Edges  
+下面让我们看看连线的类型场景。最常见的场景是连线上除了本身的连接信息外没有其它任何业务信息。这种情况下，通常你可以无脑使用JGraphT提供的`DefaultEdge`类即可。然而，还有一点你需要注意的：  
+* JGraphT是通过侵入式技术即将连接信息存储在连线对象内部而不是图内部来优化实现基于`DefaultEdge`的国。  
+在这样的机制下，如果你需要将一条连线添加到两张不同的图中时，这两张图中必须具备连线两端相同的顶点，否则会出现未定义行为的结果。如果这种（罕见的）情况在你的应用中出现了，那么只需采用`java.lang.Object`替代`DefaultEdge`作为连线的类型即可。注意替换之后需要在连接访问方法添加映射查询（map lookup）逻辑。  
+在JGraphT中多个图复用同一连线属于常见场景，例如，一个算法可能会根据输入的图返回一张子图，这张子图会复用源图中的顶点及连线子集。在这种场景中，连接等价性必须有效（否则，这个算法就无法做到复用）。 
+## 加权连线 Weighted Edges
+另一个常见的场景是每条连线包含一个double类型的权重值作为其唯一属性（比如，网络物理连接图中每条链路的延迟值）。在这种场景下，JGraphT提供了`DefaultWeightedEdge`类，它通过上面章节中提到的优化机制将权重值直接保存到连线对象中。  
+这儿也提出相同的警告，如果`DefaultWeightedEdge`在多张图中复用时，在所有的图中都必须具备相同的权重。再复述一次，如果出现问题，请使用`java.lang.Object`替代原本的连线类型。  
+## 连线的唯一值 Edges as Key Values
+有时，应用需要在每条连线上关联一个唯一值。比如，代表不同帐户间资金流动的图，每个顶点代表帐户，每条线代表流动性。在这样的场景下，应用会使用一个包含资金转移事务ID的`string`作为连线类型。  
+> * 注意：尽管这样做没啥错误，但这种实现并非最优，因为这样就无法享受上面提到对`DefaultEdge`的优化机制了。  
+但是, 将交易金额作为连线类型肯定*不对*，因为在整张图中无法保证其唯一性。（这种情况应该采用加权连线）  
+## 带业务属性的连线 Edges with Attributes
+对拥有多个或者不具唯一性属性的连线而言，处理方法和带业务属性的顶点相同。特别提出，当你采用一个自定义类作为连线类型时，系统通常期望这个自定义类应该是`DefaultEdge`或者`DefaultWeightedEdge`的子类（否则无法享受系统优化）。这些基类并没有覆写`equals`/`hashCode`方法，但应用可以根据自己的目标决定是否在子类中进行覆写。  
+注意，当你在连线类中覆写`equals`/`hashCode`方法时，不要将连线两端的顶点信息加入其中，连线的唯一性标识应该与连接的对象保持独立性。  
+比如如何在每条连线上添加一个`string`属性作为其非唯一性标签，可以参考[the LabeledEdges demo](https://jgrapht.org/guide/LabeledEdges.html)。JGraphT并未提供默认的标签连线类，因为有太多种不同的方式去实现这个场景。  
+## 使用外部对象构建顶点和连线 Vertices and Edges as External Objects  
+某些场景下，应用需要直接使用一些已有的复杂对象作为顶点和（或）连线类型。比如说，在管理线程中使用图来优化并发数据流，每个顶点代表一条工作线程，每条连线代表一个数据流的生产者/消费者队列。在这个场景中，正确的做法是使用[java.lang.Thread](https://docs.oracle.com/javase/8/docs/api/java/lang/Thread.html)作为顶点类型，使用[LinkedBlockingDeque](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/LinkedBlockingDeque.html)作为连线类型（因为这两个类都没有覆写`equals`/`hashCode`方法）。  
+但是，如果队列的实现类包含基于值的比较例如`equals`方法，那么这个队列实现类则不是用于连线类型的最佳选择。在这种情况下，应该为这个队列类增加一个指向它的包装类，和上面顶点的处理方式类似。  
+## 多重图中的带标签连线 Labeled Edges in a Multigraph
+这是一种在JGraphT中没有有效实现的场景。假设我们想要使用一张伪图（pseudograph）来表现一个[无限状态机](https://en.wikipedia.org/wiki/Finite-state_machine)，它同时允许自循环连线和两个顶点之间的多条连线。项点代表状态，连线表示状态的转移。对于顶点，我们可能选择`String`作为顶点类型，但对于连线，我们无法选取`String`作为连线类型，因为状态转移的名称在整张图中并不具备唯一性，它们只在某两个顶点间的连线子集中具备唯一性。  
+那么，我们使用上面提到的带标签的连线类型来试试看。然而，假设我们想要通过状态转移的名称和两个指定的顶点来找到一条已存的连线时，就需要调用两个顶点上的[getAllEdges](https://jgrapht.org/javadoc/org/jgrapht/Graph.html#getAllEdges-V-V-)方法来遍历所有的连线，然后再根据状态转移的名称从其中过滤出指定的连线来。如果图中定义了很多的状态转移时，这样的性能会非常低下。  
+如果有一种更快的方法来解决这个问题固然很好，尤其是在图的连线集已经提供了图中所有连线索引的情况下。现存很多笨拙的方法实现固定时间的查询，但我们并不推荐它们，所以此处不展开详述了。
