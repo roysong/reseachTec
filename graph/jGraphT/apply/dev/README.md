@@ -9,12 +9,12 @@ JGraphT开发指南包含以下话题，每个话题对应一篇独立文档：
 7. [图的生成](https://github.com/roysong/reseachTec/blob/master/graph/jGraphT/apply/dev/7_%E5%9B%BE%E7%9A%84%E7%94%9F%E6%88%90.md)  
 8. [图的遍历](https://github.com/roysong/reseachTec/blob/master/graph/jGraphT/apply/dev/8_%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86.md)  
 9. [图形算法](https://github.com/roysong/reseachTec/blob/master/graph/jGraphT/apply/dev/9_%E5%9B%BE%E5%BD%A2%E7%AE%97%E6%B3%95.md)  
-10. 图的序列化及导入导出  
+10. [图的序列化及导入导出](https://github.com/roysong/reseachTec/blob/master/graph/jGraphT/apply/dev/10_%E5%9B%BE%E7%9A%84%E5%BA%8F%E5%88%97%E5%8C%96%E5%8F%8A%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA.md)  
 11. 图的克隆  
 12. 图形比较  
 13. 图形包装器  
 14. 图形适配器   
 15. 运行demo  
-16. 探索单元测试  
+16. 单元测试  
 
 如果对本文内容有任何疑问，可参见[原文](https://jgrapht.org/guide/UserOverview)
