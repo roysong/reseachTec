@@ -26,3 +26,5 @@ JGraphT专注于图论中的数据结构和算法，而JGraphX专注于图形的
 ## 研究方式  
 由于语言壁垒（全英文资料）和技术壁垒（图论所要求的数学基础及算法）的缘故，国内技术社区对JGraphT的原理及应用几乎没有公开的资料。  
 因此，我们对JGraphT的研究分成两部分，源码研究和应用研究。源码研究的相关资料放在source目录下，应用研究的相关资料放在apply目录下。  
+## 学习路线  
+首先阅读[开发指南](https://github.com/roysong/reseachTec/tree/master/graph/jGraphT/apply/dev)，对JGraphT建立起功能上的整体概念；然后进行[demo学习](https://github.com/roysong/reseachTec/tree/master/graph/jGraphT/source/demo),了解JGraphT在开发中的具体使用方式；再进行[核心源码学习](https://github.com/roysong/reseachTec/tree/master/graph/jGraphT/source/core)，了解其实现机制；最后了解其[使用场景](https://github.com/roysong/reseachTec/tree/master/graph/jGraphT/apply/case)和[应用技术总结](https://github.com/roysong/reseachTec/tree/master/graph/jGraphT/apply/use)。  
