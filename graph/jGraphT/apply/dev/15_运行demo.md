@@ -21,4 +21,6 @@ java -cp jgrapht-demo-1.1.0.jar org.jgrapht.demo.CompleteGraphDemo
 * [DirectedGraphDemo](https://github.com/jgrapht/jgrapht/wiki/DirectedGraphDemo)  
 * [LabeledEdges](https://jgrapht.org/guide/EX-LabeledEdges)  
 
-[返回目录](https://github.com/roysong/reseachTec/tree/master/graph/jGraphT/apply/dev#jgrapht%E5%BC%80%E5%8F%91%E6%8C%87%E5%8D%97%E6%80%BB%E7%BA%B2)
+[上一节 图形适配器](https://github.com/roysong/reseachTec/blob/master/graph/jGraphT/apply/dev/14_%E5%9B%BE%E5%BD%A2%E9%80%82%E9%85%8D%E5%99%A8.md)  
+[返回目录](https://github.com/roysong/reseachTec/tree/master/graph/jGraphT/apply/dev#jgrapht%E5%BC%80%E5%8F%91%E6%8C%87%E5%8D%97%E6%80%BB%E7%BA%B2)  
+[下一节 单元测试](https://github.com/roysong/reseachTec/blob/master/graph/jGraphT/apply/dev/16_%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95.md)  

@@ -24,4 +24,6 @@ import java.net.*;
 ```  
 注意上图的顶点对象是[java.net.URL](https://docs.oracle.com/javase/8/docs/api/java/net/URL.html)的实例。JGraphT本身并不提供顶点的类定义，相应地，在规则允许的情况下，你可以根据你的应用需求自由选择最适合的对象做为顶点。  
 同样你也能自由选择连线的对象，如果你不需要在连线上添加任何指定的业务信息，那么可以如同上面的例子一样直接使用库内置的[DefaultEdge](https://jgrapht.org/javadoc/org/jgrapht/graph/DefaultEdge.html)对象。图形构造方法接收连线的类型作为参数，因此它能够在`addEdge`方法被调用时隐式创建新的连线对象以连接两个顶点。  
-[返回目录](https://github.com/roysong/reseachTec/tree/master/graph/jGraphT/apply/dev#jgrapht%E5%BC%80%E5%8F%91%E6%8C%87%E5%8D%97%E6%80%BB%E7%BA%B2)
+[上一节 开发环境准备](https://github.com/roysong/reseachTec/blob/master/graph/jGraphT/apply/dev/1_%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87.md)  
+[返回目录](https://github.com/roysong/reseachTec/tree/master/graph/jGraphT/apply/dev#jgrapht%E5%BC%80%E5%8F%91%E6%8C%87%E5%8D%97%E6%80%BB%E7%BA%B2)  
+[下一节 选择顶点和连线的类型](https://github.com/roysong/reseachTec/tree/master/graph/jGraphT/apply/dev/3_%E9%80%89%E6%8B%A9%E9%A1%B6%E7%82%B9%E5%92%8C%E8%BF%9E%E7%BA%BF%E7%9A%84%E7%B1%BB%E5%9E%8B.md)
