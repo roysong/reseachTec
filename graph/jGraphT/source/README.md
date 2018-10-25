@@ -8,6 +8,7 @@
 6. jgrapht-demo:运用示例  
 7. jgrapht-bundle:打包需要的pom.xml  
 8. jgrapht-dist:打独立JAR包的assembly.xml  
+
 从上述模块的说明可以看出，core和io模块是我们源码分析的重点。  
 demo模块可以作为功能学习和架构了解的入口。  
 opt、ext和guava作为扩展阅读的可选项存在。  
