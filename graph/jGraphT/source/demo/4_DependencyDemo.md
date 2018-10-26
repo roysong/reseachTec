@@ -118,10 +118,10 @@ public class DependencyDemo
 首先需要理解，什么是[简单环（simple cycle）](https://en.wikipedia.org/wiki/Cycle_(graph_theory))？  
 在[图论](https://en.wikipedia.org/wiki/Graph_theory)中，顶点和连线依次相连即构成*路（walk）*，开始顶点和结束顶点为同一顶点的路被称为*环（cycle）*。如果一条路中不包含重复顶点和重复连线，那么这条路被称为*简单路（simple walk）*；而开始顶点和结束顶点相同的简单路就被称为*简单环*。  
 JGraphT的cycle包中包含了四种不同算法来辨别有向图中的简单环。四种算法的最差时间复杂度如下：  
-> 1. Szwarcfiter and Lauer - O(V+EC)  
-> 2. Tarjan - O(VEC)  
-> 3. Johnson - O(((V+E)C) 
-> 4. Tiernan - O(V.const的V次方)  
+1. Szwarcfiter and Lauer - O(V+EC)  
+2. Tarjan - O(VEC)  
+3. Johnson - O(((V+E)C) 
+4. Tiernan - O(V.const的V次方)  
 
 上面的*V*代表了顶点的数量，*E*代表连线的数量，*C*则是图中简单环的数量。上面四种算法均能支持包含自循环的图，但不能支持多重图。这四种算法的空间复杂度是*O(V+E)*。  
 由于特殊结构的图本身便达到了最高的性能复杂度，所以，在实际运行过程中，高复杂度算法有可能比低复杂度算法性能更优。同样需要注意的是，某些复杂度较低的算法耗费的“调度开销”会更大，占用内存也会更多。  
@@ -134,9 +134,9 @@ JGraphT的cycle包中包含了四种不同算法来辨别有向图中的简单�
 > 6. L. G. Bezem and J. van Leeuwen, Enumeration in graphs., Technical report RUU-CS-87-7, University of Utrecht, The Netherlands, 1987.  
 
 ## 无向基础环（[cycle basis](https://en.wikipedia.org/wiki/Cycle_basis)）的计算算法  
-> 1. Paton算法的一个变种[PatonCycleBase](https://jgrapht.org/javadoc/org/jgrapht/alg/cycle/PatonCycleBase.html)，使用栈执行一个BFS（广度优先搜索），返回一个弱连接[基本基础环](https://en.wikipedia.org/wiki/Cycle_basis#Fundamental_cycles)。支持自循环图，但不支持多重（并发）连线。  
-> 2. Paton算法的另一个变种[StackBFSFundamentalCycleBasis](https://jgrapht.org/javadoc/org/jgrapht/alg/cycle/StackBFSFundamentalCycleBasis.html)，返回一个基本基础环。这是一个更通用的实现，能够同时支持自循环和多重（并发）连线。  
-> 3. 算法[QueueBFSFundamentalCycleBasis](https://jgrapht.org/javadoc/org/jgrapht/alg/cycle/QueueBFSFundamentalCycleBasis.html)采用队列结构直接实现了广度优先搜索，构建出一个基本基础环。这种实现也同时支持自循环和多重（并发）连线。  
+1. Paton算法的一个变种[PatonCycleBase](https://jgrapht.org/javadoc/org/jgrapht/alg/cycle/PatonCycleBase.html)，使用栈执行一个BFS（广度优先搜索），返回一个弱连接[基本基础环](https://en.wikipedia.org/wiki/Cycle_basis#Fundamental_cycles)。支持自循环图，但不支持多重（并发）连线。  
+2. Paton算法的另一个变种[StackBFSFundamentalCycleBasis](https://jgrapht.org/javadoc/org/jgrapht/alg/cycle/StackBFSFundamentalCycleBasis.html)，返回一个基本基础环。这是一个更通用的实现，能够同时支持自循环和多重（并发）连线。  
+3. 算法[QueueBFSFundamentalCycleBasis](https://jgrapht.org/javadoc/org/jgrapht/alg/cycle/QueueBFSFundamentalCycleBasis.html)采用队列结构直接实现了广度优先搜索，构建出一个基本基础环。这种实现也同时支持自循环和多重（并发）连线。  
 
 上述三种算法的最差时间复杂度为O(|V|的3次方)，因为基础环的大小就可以有那么大。  
 上述算法的细节可以在以下论文中查看：  
@@ -144,6 +144,6 @@ JGraphT的cycle包中包含了四种不同算法来辨别有向图中的简单�
 > 2. Narsingh Deo, G. Prabhu, and M. S. Krishnamoorthy. Algorithms for Generating Fundamental Cycles in a Graph. ACM Trans. Math. Softw. 8, 1, 26-42, 1982.  
 
 ## [欧拉回路](https://www.jianshu.com/p/e7524d6ab6ca)的计算算法  
-> 1. 一个Hierholzer算法的[实现](https://jgrapht.org/javadoc/org/jgrapht/alg/cycle/HierholzerEulerianCycle.html)用于计算欧拉图中的欧拉回路。  
+1. 一个Hierholzer算法的[实现](https://jgrapht.org/javadoc/org/jgrapht/alg/cycle/HierholzerEulerianCycle.html)用于计算欧拉图中的欧拉回路。  
 
 
